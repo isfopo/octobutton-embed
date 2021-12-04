@@ -48,9 +48,8 @@ void sendNote(uint8_t note)
   usbMIDI.sendNoteOff(note, 0, MIDI_CHANNEL);
 }
 
-void setHeldNote(uint8_t note) {
-  // do something here to indicate that the held time was reached - rapidly blink light?
-  noteIsHeld[note] = true;
+void setHeldNote(uint8_t index) {
+  noteIsHeld[index] = true;
 }
 
 void OnCC(byte channel, byte controller, byte value) {
