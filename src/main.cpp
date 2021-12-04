@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include <EasyButton.h>
 
-#define BAUDRATE 115200
 #define MIDI_CHANNEL 0
 #define HOLD_TIME 2000
 
@@ -46,8 +45,6 @@ void setHeldNote(uint8_t note) {
 }
 
 void setup() {
-  Serial.begin(BAUDRATE);
-
   for (int i = 0; i < 8; i++) {
     buttons[i].begin();
   }
