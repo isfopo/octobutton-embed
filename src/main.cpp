@@ -8,6 +8,10 @@ uint8_t pins[8] = {
   0, 1, 2, 3, 4, 5, 6, 7
 };
 
+uint8_t ledPins[8] = {
+  13, 14, 15, 16, 17, 18, 19, 20
+};
+
 EasyButton buttons[8] = {
   EasyButton(pins[0]),
   EasyButton(pins[1]),
@@ -66,6 +70,15 @@ void setup() {
   buttons[5].onPressedFor(HOLD_TIME, []() -> void { setHeldNote(5); });
   buttons[6].onPressedFor(HOLD_TIME, []() -> void { setHeldNote(6); });
   buttons[7].onPressedFor(HOLD_TIME, []() -> void { setHeldNote(7); });
+
+  pinMode(ledPins[0], OUTPUT);
+  pinMode(ledPins[1], OUTPUT);
+  pinMode(ledPins[2], OUTPUT);
+  pinMode(ledPins[3], OUTPUT);
+  pinMode(ledPins[4], OUTPUT);
+  pinMode(ledPins[5], OUTPUT);
+  pinMode(ledPins[6], OUTPUT);
+  pinMode(ledPins[7], OUTPUT);
 }
 
 void loop() {
@@ -77,4 +90,13 @@ void loop() {
       noteIsHeld[i] = false;
     }
   }
+
+  digitalWrite(ledPins[0], HIGH);
+  digitalWrite(ledPins[1], HIGH);
+  digitalWrite(ledPins[2], HIGH);
+  digitalWrite(ledPins[3], HIGH);
+  digitalWrite(ledPins[4], HIGH);
+  digitalWrite(ledPins[5], HIGH);
+  digitalWrite(ledPins[6], HIGH);
+  digitalWrite(ledPins[7], HIGH);
 }
