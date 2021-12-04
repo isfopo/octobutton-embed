@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <EasyButton.h>
 
-#define MIDI_CHANNEL 0
+#define MIDI_CHANNEL 1
 #define HOLD_TIME 2000
 #define CC_THRESHOLD 64
 
@@ -62,11 +62,18 @@ void OnCC(byte channel, byte controller, byte value) {
   Serial.print(value);
   Serial.println();
 
-  if(value >= CC_THRESHOLD) {
-    digitalWrite(ledPins[0], HIGH);
-  } else {
-    digitalWrite(ledPins[0], LOW);
+  if ( channel == MIDI_CHANNEL ) {
+    for (int i = 0; i < 8; i++) {
+      if (controller == ledCCs[i]) {
+        if( value >= CC_THRESHOLD ) {
+          digitalWrite(ledPins[i], HIGH);
+        } else {
+          digitalWrite(ledPins[i], LOW);
+        }
+      }
+    }
   }
+
 }
 
 void setup() {
