@@ -3,6 +3,7 @@
 
 #define MIDI_CHANNEL 0
 #define HOLD_TIME 2000
+#define CC_THRESHOLD 64
 
 uint8_t pins[8] = {
   0, 1, 2, 3, 4, 5, 6, 7
@@ -10,6 +11,10 @@ uint8_t pins[8] = {
 
 uint8_t ledPins[8] = {
   13, 14, 15, 16, 17, 18, 19, 20
+};
+
+uint8_t ledCCs[8] = {
+  1, 2, 3, 4, 5, 6, 7, 8
 };
 
 EasyButton buttons[8] = {
@@ -48,10 +53,28 @@ void setHeldNote(uint8_t note) {
   noteIsHeld[note] = true;
 }
 
+void OnCC(byte channel, byte controller, byte value) {
+
+  Serial.print(channel);
+  Serial.print(" ");
+  Serial.print(controller);
+  Serial.print(" ");
+  Serial.print(value);
+  Serial.println();
+
+  if(value >= CC_THRESHOLD) {
+    digitalWrite(ledPins[0], HIGH);
+  } else {
+    digitalWrite(ledPins[0], LOW);
+  }
+}
+
 void setup() {
   for (int i = 0; i < 8; i++) {
     buttons[i].begin();
   }
+
+  usbMIDI.setHandleControlChange(OnCC);
 
   buttons[0].onPressed([]() -> void { sendNote(pressedNotes[0]); });
   buttons[1].onPressed([]() -> void { sendNote(pressedNotes[1]); });
@@ -82,6 +105,8 @@ void setup() {
 }
 
 void loop() {
+  usbMIDI.read();
+
   for (int i = 0; i < 8; i++) {
     buttons[i].read();
 
@@ -90,13 +115,4 @@ void loop() {
       noteIsHeld[i] = false;
     }
   }
-
-  digitalWrite(ledPins[0], HIGH);
-  digitalWrite(ledPins[1], HIGH);
-  digitalWrite(ledPins[2], HIGH);
-  digitalWrite(ledPins[3], HIGH);
-  digitalWrite(ledPins[4], HIGH);
-  digitalWrite(ledPins[5], HIGH);
-  digitalWrite(ledPins[6], HIGH);
-  digitalWrite(ledPins[7], HIGH);
 }
