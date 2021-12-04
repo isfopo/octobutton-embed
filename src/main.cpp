@@ -55,16 +55,12 @@ void setHeldNote(uint8_t note) {
 
 void OnCC(byte channel, byte controller, byte value) {
 
-  Serial.print(channel);
-  Serial.print(" ");
-  Serial.print(controller);
-  Serial.print(" ");
-  Serial.print(value);
-  Serial.println();
-
   if ( channel == MIDI_CHANNEL ) {
+
     for (int i = 0; i < 8; i++) {
+
       if (controller == ledCCs[i]) {
+        
         if( value >= CC_THRESHOLD ) {
           digitalWrite(ledPins[i], HIGH);
         } else {
@@ -73,7 +69,6 @@ void OnCC(byte channel, byte controller, byte value) {
       }
     }
   }
-
 }
 
 void setup() {
