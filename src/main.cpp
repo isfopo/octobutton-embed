@@ -2,7 +2,7 @@
 #include <EasyButton.h>
 
 #define MIDI_CHANNEL 1
-#define HOLD_TIME 2000
+#define HOLD_TIME 1500
 #define CC_THRESHOLD 64
 
 uint8_t pins[8] = {
