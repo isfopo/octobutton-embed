@@ -13,7 +13,7 @@ uint8_t ledPins[8] = {
   20, 19, 18, 17, 16, 15, 14, 13
 };
 
-uint8_t ledCCs[8] = {
+uint8_t ledNotes[8] = {
   1, 2, 3, 4, 5, 6, 7, 8
 };
 
@@ -48,19 +48,21 @@ void setHeldNote(uint8_t index) {
   noteIsHeld[index] = true;
 }
 
-void OnCC(byte channel, byte controller, byte value) {
-
-  if ( channel == MIDI_CHANNEL ) {
-
+void handleNoteOn(byte channel, byte note, byte velocity) {
+ if ( channel == MIDI_CHANNEL ) {
     for (int i = 0; i < 8; i++) {
+      if (note == ledNotes[i]) {
+        digitalWrite(ledPins[i], HIGH);
+      }
+    }
+  }
+}
 
-      if (controller == ledCCs[i]) {
-        
-        if( value >= CC_THRESHOLD ) {
-          digitalWrite(ledPins[i], HIGH);
-        } else {
-          digitalWrite(ledPins[i], LOW);
-        }
+void handleNoteOff(byte channel, byte note, byte velocity) {
+ if ( channel == MIDI_CHANNEL ) {
+    for (int i = 0; i < 8; i++) {
+      if (note == ledNotes[i]) {
+        digitalWrite(ledPins[i], LOW);
       }
     }
   }
@@ -70,8 +72,10 @@ void setup() {
   for (int i = 0; i < 8; i++) {
     buttons[i].begin();
   }
+  Serial.begin(9600);
 
-  usbMIDI.setHandleControlChange(OnCC);
+  usbMIDI.setHandleNoteOn(handleNoteOn);
+  usbMIDI.setHandleNoteOn(handleNoteOff);
 
   buttons[0].onPressed([]() -> void { sendNote(pressedNotes[0]); });
   buttons[1].onPressed([]() -> void { sendNote(pressedNotes[1]); });
