@@ -5,9 +5,8 @@
 #define HOLD_TIME 500
 #define CC_THRESHOLD 64
 
-uint8_t pins[8] = {
-  0, 1, 2, 3, 4, 5, 6, 7
-};
+uint8_t pins[8] = {7, 6, 5, 4, 3, 2, 1, 0};
+
 uint8_t ledPins[8] = {20, 19, 18, 17, 16, 15, 14, 13};
 
 uint8_t ledNotes[8] = {1, 2, 3, 4, 5, 6, 7, 8};
